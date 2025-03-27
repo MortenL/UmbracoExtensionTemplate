@@ -1,4 +1,4 @@
-# Umbraco 15 Extension Starter
+# Umbraco Extension Starter
 
 A modern starting point for developing Umbraco 15 backoffice extensions using TypeScript, Lit components, and Vite.
 
