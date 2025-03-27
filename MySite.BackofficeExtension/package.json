@@ -9,10 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@umbraco-cms/backoffice": "15.3.0",
     "lit": "^3.2.1"
   },
   "devDependencies": {
+    "@umbraco-cms/backoffice": "15.3.0",
     "typescript": "~5.7.3",
     "vite": "^6.2.3"
   }

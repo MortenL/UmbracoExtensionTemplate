@@ -7,6 +7,7 @@ A modern starting point for developing Umbraco 15 backoffice extensions using Ty
 - **Custom Dashboard**: Create beautiful dashboards using Lit components
 - **Custom Sections**: Add new sections to the Umbraco backoffice
 - **Entity Actions**: Implement custom actions for content and media items
+- **API Integration**: Secure API communication with Umbraco backoffice
 - **Modern Frontend**: Built with TypeScript, Lit components, and Vite
 - **Best Practices**: Follows Umbraco 15 extension development guidelines
 
@@ -38,19 +39,26 @@ A modern starting point for developing Umbraco 15 backoffice extensions using Ty
 
 ```
 UmbracoPlugin/
-├── src/
-│   ├── backoffice/         # Frontend source code
-│   │   ├── components/     # Lit components
-│   │   ├── dashboards/     # Dashboard extensions
-│   │   ├── sections/       # Section extensions
-│   │   ├── entity-actions/ # Entity action extensions
-│   │   └── manifests/      # Extension manifests
-│   └── Models/             # .NET models
-├── wwwroot/                # Compiled frontend assets
-├── package.json            # Frontend dependencies
-├── tsconfig.json           # TypeScript configuration
-├── vite.config.ts          # Vite build configuration
-└── UmbracoPlugin.csproj    # .NET project file
+├── MySite.BackofficeExtension/        # Frontend extension project
+│   ├── src/                           # Frontend source code
+│   │   ├── section/                   # Section and workspace components
+│   │   │   └── workspace/             # Workspace components
+│   │   │       └── overview/          # Overview workspace components
+│   │   ├── services/                  # Service classes
+│   │   │   └── api.service.ts         # API communication service
+│   │   ├── entrypoint.ts              # OpenAPI configuration
+│   │   └── index.ts                   # Main entry point
+│   ├── package.json                   # Frontend dependencies
+│   ├── tsconfig.json                  # TypeScript configuration
+│   └── vite.config.ts                 # Vite build configuration
+│
+├── MySite.BackofficeExtension.Core/   # Backend C# project
+│   ├── Controllers/                   # API controllers
+│   │   └── MyApiController.cs         # Main API controller
+│   ├── Models/                        # Data models
+│   │   └── MyDataModel.cs             # Main data model
+│   └── Services/                      # Backend services
+└── MySite.Umbraco/                    # Umbraco site project
 ```
 
 ## Development Workflow
@@ -60,13 +68,42 @@ UmbracoPlugin/
 3. Run `pnpm run build` to build for production
 4. Build and deploy your .NET project
 
+## API Authentication
+
+This project demonstrates secure API communication with the Umbraco backoffice:
+
+1. **API Service**: The `ApiService` class handles communication with the backend API:
+   - Uses proper URL patterns that match controller route attributes
+   - Handles authentication tokens via Umbraco's OpenAPI configuration
+   - Includes error handling and debugging information
+
+2. **URL Patterns**: The API endpoints follow Umbraco's routing conventions:
+   - Base URL: `/umbraco/management/api/v1/MySiteApi`
+   - GET (all items): Base URL with no additional path
+   - GET (by ID): `${baseUrl}/${id}`
+   - POST (save): Base URL with no additional path
+
+3. **Authentication**: Implemented using Umbraco's authentication system:
+   - Uses the OpenAPI.TOKEN function to get authentication tokens
+   - Includes the token in the Authorization header
+   - Uses credentials: 'include' to ensure cookies are sent with requests
+
+## UI Components
+
+The extension uses Umbraco UI components to create a consistent user experience:
+
+- **Tables**: Uses `uui-table` components with proper column configuration
+- **Badges**: Uses `uui-tag` for status indicators
+- **Buttons**: Uses `uui-button` for actions
+- **Boxes**: Uses `uui-box` for content containers
+
 ## Extension Types
 
 This starter includes examples for the following Umbraco 15 extension types:
 
 - **Sections**: Custom navigation items in the backoffice
-- **Dashboards**: Tabs that appear in sections with useful information
-- **Entity Actions**: Actions that can be performed on specific items
+- **Workspaces**: Content areas within sections
+- **API Controllers**: Backend endpoints for data operations
 
 ## URL Structure
 
@@ -74,6 +111,12 @@ The extension follows Umbraco 15's routing conventions:
 
 ```
 /section/{section-alias}/{route}/{id}
+```
+
+For API endpoints:
+
+```
+/umbraco/management/api/v1/{api-name}/{id?}
 ```
 
 ## Resources

@@ -9,6 +9,12 @@ import { treeViewManifest } from './tree/manifest';
 import { workspaceManifests } from './section/workspace/manifest';
 
 const manifests: Array<UmbExtensionManifest> = [
+  {
+    name: "Backoffice Extension Entrypoint",
+    alias: "MySite.BackofficeExtension.Entrypoint",
+    type: "backofficeEntryPoint",
+    js: () => import("./entrypoint"),
+  },
   sectionManifest,
   sectionSidebarManifest,
   treeViewManifest,
